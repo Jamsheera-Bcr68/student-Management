@@ -8,7 +8,7 @@ class AuthController {
     }
     async getRegister(req, res) {
         if (!req.session.student) {
-            res.render('studentLogin');
+            res.render('studentSignup');
         }
     }
     async getLogin(req, res) {

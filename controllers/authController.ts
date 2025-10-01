@@ -8,7 +8,7 @@ export class AuthController {
     constructor(private authService: AuthService) { }
     async getRegister(req: Request, res: Response) {
         if(!req.session.student){
-            res.render('studentLogin')
+            res.render('studentSignup')
         }
       
     }
