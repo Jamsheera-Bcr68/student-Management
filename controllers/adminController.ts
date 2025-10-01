@@ -3,21 +3,28 @@ import { Request, Response } from "express";
 import { studentModel } from "../Model/studentModel";
 import { AdminService } from "../services/adminService";
 
+
 const router = express.Router()
 export class AdminController {
     constructor(private adminService: AdminService) { }
     async getLogin(req: Request, res: Response) {
-        res.render("login")
+        if(!req.session.admin){
+            res.render("login")
+        }
+        
     }
     async postLogin(req: Request, res: Response) {
         try {
             const { email, password } = req.body
-            console.log(req.body);
+            //console.log(req.body);
 
             const admin = await this.adminService.login(email, password)
-            console.log('admin ', admin);
+            //console.log('admin ', admin);
 
-            if (admin) { return res.status(200).json({ success: true, message: 'Login Successfull' }) }
+            if (admin) {
+                  (req.session as any).admin = admin;
+                 return res.status(200).json({ success: true, message: 'Login Successfull' }) 
+                }
             else return res.status(500).json({ success: false, message: 'Invalid Credentials' })
         } catch (error) {
             return res.status(500).json({ success: false, message: 'Server error' })
@@ -90,8 +97,18 @@ export class AdminController {
             return res.status(500).json({success:false,message:err.message||'Server Error'})
         }
     }
-}
 
+    async logout(req:Request,res:Response){
+        req.session.destroy(err=>{
+            if(err){
+                console.log(' error in destroying seession',err);
+                return res.json({success:false,message:'error in destroying seession'})
+            }else{
+                 return res.status(200).json({success:true,message:'Admin logout successfull'})
+            }
+        })
+}
+}
 
 export const getAllStudent: express.RequestHandler = async (req, res) => {
     try {
@@ -103,3 +120,4 @@ export const getAllStudent: express.RequestHandler = async (req, res) => {
     }
 
 }
+

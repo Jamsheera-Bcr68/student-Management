@@ -10,6 +10,7 @@ export declare class AdminController {
     getStudent(req: Request, res: Response): Promise<express.Response<any, Record<string, any>>>;
     editStudent(req: Request, res: Response): Promise<express.Response<any, Record<string, any>> | undefined>;
     deleteStudent(req: Request, res: Response): Promise<express.Response<any, Record<string, any>> | undefined>;
+    logout(req: Request, res: Response): Promise<void>;
 }
 export declare const getAllStudent: express.RequestHandler;
 //# sourceMappingURL=adminController.d.ts.map

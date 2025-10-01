@@ -10,15 +10,18 @@ class AdminController {
         this.adminService = adminService;
     }
     async getLogin(req, res) {
-        res.render("login");
+        if (!req.session.admin) {
+            res.render("login");
+        }
     }
     async postLogin(req, res) {
         try {
             const { email, password } = req.body;
-            console.log(req.body);
+            //console.log(req.body);
             const admin = await this.adminService.login(email, password);
-            console.log('admin ', admin);
+            //console.log('admin ', admin);
             if (admin) {
+                req.session.admin = admin;
                 return res.status(200).json({ success: true, message: 'Login Successfull' });
             }
             else
@@ -87,6 +90,17 @@ class AdminController {
         catch (err) {
             return res.status(500).json({ success: false, message: err.message || 'Server Error' });
         }
+    }
+    async logout(req, res) {
+        req.session.destroy(err => {
+            if (err) {
+                console.log(' error in destroying seession', err);
+                return res.json({ success: false, message: 'error in destroying seession' });
+            }
+            else {
+                return res.status(200).json({ success: true, message: 'Admin logout successfull' });
+            }
+        });
     }
 }
 exports.AdminController = AdminController;

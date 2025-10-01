@@ -8,5 +8,6 @@ export declare class AuthController {
     login(req: Request, res: Response): Promise<Response<any, Record<string, any>>>;
     register(req: Request, res: Response): Promise<Response<any, Record<string, any>> | undefined>;
     getHome(req: Request, res: Response): Promise<void>;
+    logout(req: Request, res: Response): Promise<void>;
 }
 //# sourceMappingURL=authController.d.ts.map

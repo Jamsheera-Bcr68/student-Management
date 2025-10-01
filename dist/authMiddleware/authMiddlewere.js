@@ -1,10 +1,22 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-// export function isStudentLoggedIn(req:Request,res:Response,next:NextFunction){
-//     if(req.session.student){
-//         return next
-//     }else{
-//           return res.status(401).json({ success: false, message: "Please login first" })
-//     }
-// }
+exports.isAdminLogged = isAdminLogged;
+exports.isStudentLogged = isStudentLogged;
+function isAdminLogged(req, res, next) {
+    if (req.session.admin) {
+        console.log(req.session);
+        return next();
+    }
+    else {
+        res.redirect('login');
+    }
+}
+function isStudentLogged(req, res, next) {
+    if (req.session.student) {
+        return next();
+    }
+    else {
+        res.redirect('login');
+    }
+}
 //# sourceMappingURL=authMiddlewere.js.map

@@ -6,9 +6,11 @@ import {adminRouter} from './routes/adminRoute'
 import { studentRouter } from "./routes/studentRoute";
 import  session  from "express-session";
 import { dbConnect } from "./config/connectdb";
+import nocache = require("nocache");
 
 dbConnect()
 const app=express()
+app.use(nocache())
 app.use(session({
     resave:true,
     saveUninitialized:true,

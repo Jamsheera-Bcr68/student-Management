@@ -1,9 +1,20 @@
 import { Request,Response,NextFunction } from "express";
 
-// export function isStudentLoggedIn(req:Request,res:Response,next:NextFunction){
-//     if(req.session.student){
-//         return next
-//     }else{
-//           return res.status(401).json({ success: false, message: "Please login first" })
-//     }
-// }
+export function isAdminLogged(req:Request,res:Response,next:NextFunction){
+    if(req.session.admin){
+        console.log(req.session);
+        
+        
+        return next()
+  }else{
+      res.redirect('login')
+  }
+ }
+ export function isStudentLogged(req:Request,res:Response,next:NextFunction){
+    if(req.session.student){
+        
+        return next()
+  }else{
+      res.redirect('login')
+  }
+ }

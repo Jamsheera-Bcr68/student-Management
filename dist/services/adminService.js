@@ -10,12 +10,11 @@ const studentModel_1 = require("../Model/studentModel");
 class AdminService {
     async login(email, password) {
         const admin = await adminModel_1.adminModel.findOne({ email, password });
-        console.log('admin ', admin);
         return admin;
     }
     async getAllStudents() {
         const students = await studentModel_1.studentModel.find({ isDeleted: false });
-        console.log(students);
+        // console.log(students);
         return students;
     }
     async getStudent(studentId) {

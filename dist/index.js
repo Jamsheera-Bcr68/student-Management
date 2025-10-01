@@ -10,8 +10,10 @@ const adminRoute_1 = require("./routes/adminRoute");
 const studentRoute_1 = require("./routes/studentRoute");
 const express_session_1 = __importDefault(require("express-session"));
 const connectdb_1 = require("./config/connectdb");
+const nocache = require("nocache");
 (0, connectdb_1.dbConnect)();
 const app = express();
+app.use(nocache());
 app.use((0, express_session_1.default)({
     resave: true,
     saveUninitialized: true,
