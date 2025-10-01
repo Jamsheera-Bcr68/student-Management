@@ -7,6 +7,9 @@ export declare class AdminController {
     getLogin(req: Request, res: Response): Promise<void>;
     postLogin(req: Request, res: Response): Promise<express.Response<any, Record<string, any>>>;
     getStudentManagement(req: Request, res: Response): Promise<void>;
+    getStudent(req: Request, res: Response): Promise<express.Response<any, Record<string, any>>>;
+    editStudent(req: Request, res: Response): Promise<express.Response<any, Record<string, any>> | undefined>;
+    deleteStudent(req: Request, res: Response): Promise<express.Response<any, Record<string, any>> | undefined>;
 }
 export declare const getAllStudent: express.RequestHandler;
 //# sourceMappingURL=adminController.d.ts.map

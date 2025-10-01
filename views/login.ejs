@@ -37,9 +37,11 @@
                 e.preventDefault();
 
                 const formData = new FormData(form);
-                const formObject = Object.fromEntries(formData.entries());
-
                
+                
+                const formObject = Object.fromEntries(formData.entries());
+               
+        
                 if (!formObject.email) {
                     return Swal.fire("Email is required");
                 }

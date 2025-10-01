@@ -7,7 +7,8 @@ export interface IStudent{
   age ?:number;
   course ?: string;
   name ?: string;
-  phone ?: number
+  phone ?: number;
+  isDeleted:boolean
 }
 const studentSchema = new mongoose.Schema<IStudent>({
   id: { type: Number},
@@ -17,5 +18,6 @@ const studentSchema = new mongoose.Schema<IStudent>({
   course: { type: String },
   password: { type: Number, required: true },
   phone: { type: Number },
+  isDeleted:{type:Boolean,default:false}
 })
 export const studentModel=mongoose.model<IStudent>('Student',studentSchema)

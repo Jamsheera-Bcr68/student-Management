@@ -13,6 +13,7 @@ const studentSchema = new mongoose_1.default.Schema({
     course: { type: String },
     password: { type: Number, required: true },
     phone: { type: Number },
+    isDeleted: { type: Boolean, default: false }
 });
 exports.studentModel = mongoose_1.default.model('Student', studentSchema);
 //# sourceMappingURL=studentModel.js.map
