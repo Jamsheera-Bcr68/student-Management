@@ -1,0 +1,1 @@
+{"version":3,"file":"adminService.d.ts","sourceRoot":"","sources":["../../services/adminService.ts"],"names":[],"mappings":"AAAA,OAAO,EAAa,MAAM,EAAE,MAAM,qBAAqB,CAAC;AACxD,OAAO,EAAE,QAAQ,EAAgB,MAAM,uBAAuB,CAAC;AAE/D,qBAAa,YAAY;IACf,KAAK,CAAC,KAAK,EAAC,MAAM,EAAC,QAAQ,EAAC,MAAM,GAAE,OAAO,CAAC,MAAM,GAAC,IAAI,CAAC;IAOxD,cAAc,IAAG,OAAO,CAAC,QAAQ,EAAE,CAAC;CAI7C"}

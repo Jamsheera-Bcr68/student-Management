@@ -10,7 +10,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "target": "esnext",
-    "types": [],
+    "types": ["node", "express-session"],
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],
@@ -29,5 +29,6 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-  }
+  },
+    "include": ["**/*", "types/**/*"]
 }

@@ -13,9 +13,9 @@
         <div class="container">
     <div class="form-container" id="login-form">
       <h1>Admin Login</h1>
-      <form action="/admin/login" method="post">
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" value="" required>
+      <form id="login" action="/admin/login" method="post">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="" required>
         <label for="password">Password</label>
          <div class="password-container">
       <input type="password" value="" id="password" name="password" required>
@@ -23,24 +23,70 @@
     </div>
         <button type="submit">Login</button>
       </form>
-      <p>Don't have an account? <a href="#" id="signup-link">Sign up</a></p>
+    
     </div>
 
-    <div class="form-container" id="signup-form" style="display: none;">
-      <h1>Sign Up</h1>
-      <form>
-        <label for="new-username">Username</label>
-        <input type="text" id="new-username" name="new-username" required>
-        <label for="new-email">Email</label>
-        <input type="email" id="new-email" name="new-email" required>
-        <label for="new-password">Password</label>
-        <input type="password" id="new-password" name="new-password" required>
-        <button type="submit">Sign Up</button>
-      </form>
-      <p>Already have an account? <a href="#" id="login-link">Login</a></p>
-    </div>
   </div>
     </div>
     <script src="/js/signup.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+     <script>
+            const form = document.getElementById('login');
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const formData = new FormData(form);
+                const formObject = Object.fromEntries(formData.entries());
+
+               
+                if (!formObject.email) {
+                    return Swal.fire("Email is required");
+                }
+                if (!formObject.password) {
+                    return Swal.fire("Password is required");
+                }
+               
+                
+                if (formObject.password.length < 4) {
+                    return Swal.fire("Password should be at least 6 characters long");
+                }
+
+                fetch('/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formObject)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data && data.success) {
+                            Swal.fire({
+                                //position: "top-end",
+                                icon: "success",
+                                title: data.message,
+                                showConfirmButton: false,
+                                timer: 1000
+                            }).then(()=>{
+                                window.location.href='/admin/studentManagement'
+                            })
+                            
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                text: data.message || "Something went wrong",
+                            });
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Error:', err);
+                        Swal.fire({
+                            icon: "error",
+                            text: err.message || "Network error",
+                        });
+                    });
+            });
+        </script>
 </body>
 </html>

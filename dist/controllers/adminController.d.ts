@@ -1,4 +1,12 @@
+import express = require("express");
 import { Request, Response } from "express";
-export declare const getLogin: (req: Request, res: Response) => Promise<void>;
-export declare const postLogin: (req: Request, res: Response) => Promise<void>;
+import { AdminService } from "../services/adminService";
+export declare class AdminController {
+    private adminService;
+    constructor(adminService: AdminService);
+    getLogin(req: Request, res: Response): Promise<void>;
+    postLogin(req: Request, res: Response): Promise<express.Response<any, Record<string, any>>>;
+    getStudentManagement(req: Request, res: Response): Promise<void>;
+}
+export declare const getAllStudent: express.RequestHandler;
 //# sourceMappingURL=adminController.d.ts.map

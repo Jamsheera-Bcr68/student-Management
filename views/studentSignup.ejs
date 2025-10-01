@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/signup.css">
+</head>
+
+<body>
+
+
+    <div class="container">
+        <div class="container">
+            <div class="form-container" id="login-form">
+                <h1>Student Signup</h1>
+                <form id="register" action="/student/register" method="post">
+                    <label for="name">Name</label>
+                    <input type="text" id="text" name="name" value="" required>
+                    <label for="name">Age</label>
+                    <input type="number" min="10" id="age" name="age" value="" required>
+                    <label for="phone">Phone</label>
+                    <input type="phone" id="phone" name="phone" value="" required>
+                    <label for="username">Email</label>
+                    <input type="email" id="email" name="email" value="" required>
+                    <label for="course">Course</label>
+                    <input type="text" id="course" name="course" value="" required>
+                    <label for="password">Password</label>
+                    <div class="password-container">
+                        <input type="password" value="" id="password" name="password" required>
+                        <!--<button type="button" class="toggle-eye" onclick="togglePassword()">👁</button> -->
+                    </div>
+                    <label for="confirmpassword">Confirm Password</label>
+                    <input type="password" value="" id="conf_password" name="conf_password" required>
+                    <button type="submit">Sign Up</button>
+                </form>
+                <p>Do you have already an account? <a href="/student/login" id="signup-link">Login</a></p>
+            </div>
+
+
+
+        </div>
+        <script src="/js/signup.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            const form = document.getElementById('register');
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const formData = new FormData(form);
+                const formObject = Object.fromEntries(formData.entries());
+
+               
+                if (!formObject.email) {
+                    return Swal.fire("Email is required");
+                }
+                if (!formObject.password) {
+                    return Swal.fire("Password is required");
+                }
+                if (!formObject.conf_password) {
+                    return Swal.fire("Confirm Password is required");
+                }
+                if (formObject.password !== formObject.conf_password) {
+                    return Swal.fire("Passwords do not match");
+                }
+                if (formObject.password.length < 6) {
+                    return Swal.fire("Password should be at least 6 characters long");
+                }
+
+                fetch('/student/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formObject)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data && data.success) {
+                            Swal.fire({
+                                //position: "top-end",
+                                icon: "success",
+                                title: data.message,
+                                showConfirmButton: false,
+                                timer: 1000
+                            }).then(()=>{
+                                window.location.href='/student/home'
+                            })
+                            // Optionally redirect after success
+                            // setTimeout(() => window.location.href = "/login", 1200);
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                text: data.message || "Something went wrong",
+                            });
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Error:', err);
+                        Swal.fire({
+                            icon: "error",
+                            text: err.message || "Network error",
+                        });
+                    });
+            });
+        </script>
+
+
+        <!-- <script>
+        const form=document.getElementById('register')
+        form.addEventListener('submit',function (e){
+            e.preventDefault()
+            let formData=new FormData(form)
+            let formObject=Object.entries(formData)
+            console.log('form object ',formObject);
+            
+            fetch('/student/register',{method:'POST',
+                body:JSON.stringify(formObject)
+            }).then(res.json())
+            .then(data=>{
+                console.log(data,'from backend');
+                
+            }).catch(err=>{console.log(err);
+            })
+        
+            
+        })
+    </script> -->
+</body>
+
+</html>

@@ -3,9 +3,11 @@ import express = require("express");
 import type { Express, Request, Response } from "express";
 import path = require("path");
 import {adminRouter} from './routes/adminRoute'
+import { studentRouter } from "./routes/studentRoute";
 import  session  from "express-session";
+import { dbConnect } from "./config/connectdb";
 
-
+dbConnect()
 const app=express()
 app.use(session({
     resave:true,
@@ -26,6 +28,7 @@ app.get('/',(req:Request,res:Response)=>{
 })
 
 app.use('/admin',adminRouter)
+app.use('/student',studentRouter)
 app.listen(port,()=>{
     console.log('server listening at 7000');
     

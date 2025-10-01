@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - User Management</title>
+  <link rel="stylesheet" href="/css/studentManagement.css">
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header>
+    <h2>👥 Student Management</h2>
+    <button onclick="logout()">Logout</button>
+  </header>
+
+  <div class="container">
+
+
+    <!-- <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search by username or email..." onkeyup="searchUser()">
+    </div> -->
+
+    <table id="userTable">
+      <thead>
+        <tr>
+          <th>Student ID</th>
+          <th>Student Name</th>
+          <th>Age</th>
+          <th>Email</th>
+          <th>Course</th>
+          <th>Phone</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% students.forEach((student, index)=> { %>
+          <tr>
+            <td>
+              <%= index + 1 %>
+            </td>
+            <td>
+              <%= student.name ||'' %>
+            </td>
+            <td>
+              <%= student.age %>
+            </td>
+            <td>
+              <%= student.email %>
+            </td>
+            <td>
+              <%= student.course||'' %>
+            </td>
+            <td>
+              <%= student.week||"" %>
+            </td>
+            <td>
+              <% if (student.status==='Active' ) { %>
+                <button class="btn btn-block" onclick="blockUser('<%= student._id %>')">Block</button>
+                <% } else { %>
+                  <button class="btn btn-unblock" onclick="unblockUser('<%= student._id %>')">Unblock</button>
+                  <% } %>
+                    <button class="btn btn-delete" onclick="deleteUser('<%= student._id %>')">Delete</button>
+            </td>
+          </tr>
+          <% }) %>
+      </tbody>
+
+    </table>
+  </div>
+
+  <script>
+    function blockUser(button) {
+      let row = button.closest("tr");
+      row.cells[3].textContent = "Blocked";
+      button.outerHTML = '<button class="btn btn-unblock" onclick="unblockUser(this)">Unblock</button>';
+    }
+
+    function unblockUser(button) {
+      let row = button.closest("tr");
+      row.cells[3].textContent = "Active";
+      button.outerHTML = '<button class="btn btn-block" onclick="blockUser(this)">Block</button>';
+    }
+
+    function searchUser() {
+      let input = document.getElementById("searchInput").value.toLowerCase();
+      let rows = document.querySelectorAll("#userTable tbody tr");
+      rows.forEach(row => {
+        let username = row.cells[1].textContent.toLowerCase();
+        let email = row.cells[2].textContent.toLowerCase();
+        if (username.includes(input) || email.includes(input)) {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
+        }
+      });
+    }
+
+    function logout() {
+      // Redirect to login page or clear session
+      alert("Logged out successfully!");
+      window.location.href = "/admin/login";
+    }
+  </script>
+</body>
+
+</html>
