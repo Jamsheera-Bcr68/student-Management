@@ -46,7 +46,7 @@ class AuthController {
             }
         }
         catch (error) {
-            res.status(500).json({ message: error.message || 'server errror' });
+            res.status(500).json({ success: false, message: error.message || 'server errror' });
         }
     }
     async getHome(req, res) {

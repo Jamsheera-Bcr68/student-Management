@@ -2,18 +2,25 @@ import express = require("express");
 import { Request, Response } from "express";
 import { studentModel } from "../Model/studentModel";
 import { AdminService } from "../services/adminService";
-
+import { AdminLoginRequest } from "../Model/adminRequestModel";
+import { AdminResponse } from "../Model/adminResponseModel";
+import { ApiResponse, StudentResponse } from "../Model/studentResponseModel";
+import { UpdateStudentRequest } from "../Model/studentRequestModel";
+interface TypedRequest<T> extends Request {
+    body: T
+    
+}
 
 const router = express.Router()
 export class AdminController {
     constructor(private adminService: AdminService) { }
     async getLogin(req: Request, res: Response) {
-        if(!req.session.admin){
+        if (!req.session.admin) {
             res.render("login")
         }
-        
+
     }
-    async postLogin(req: Request, res: Response) {
+    async postLogin(req: TypedRequest<AdminLoginRequest>, res: Response<ApiResponse<AdminResponse>>) {
         try {
             const { email, password } = req.body
             //console.log(req.body);
@@ -22,9 +29,9 @@ export class AdminController {
             //console.log('admin ', admin);
 
             if (admin) {
-                  (req.session as any).admin = admin;
-                 return res.status(200).json({ success: true, message: 'Login Successfull' }) 
-                }
+                (req.session as any).admin = admin;
+                return res.status(200).json({ success: true, message: 'Login Successfull' })
+            }
             else return res.status(500).json({ success: false, message: 'Invalid Credentials' })
         } catch (error) {
             return res.status(500).json({ success: false, message: 'Server error' })
@@ -59,7 +66,7 @@ export class AdminController {
             return res.status(500).json({ success: false, message: error.message || 'server error' })
         }
     }
-    async editStudent(req: Request, res: Response) {
+    async editStudent(req: TypedRequest<UpdateStudentRequest>, res: Response<ApiResponse<StudentResponse>>) {
         try {
             console.log('from admin controll edit stusnt');
             let studentId = req.params.studentId
@@ -71,7 +78,7 @@ export class AdminController {
             if (studentId) {
                 let student = await this.adminService.editStudent(studentId, data)
                 if (student) {
-                    return res.status(200).json({ success: true, message: 'student updated success fully', student })
+                    return res.status(200).json({ success: true, message: 'student updated success fully',data:student })
                 }
             } else {
                 console.log('Student  id is not found');
@@ -80,7 +87,7 @@ export class AdminController {
             }
 
         } catch (error: any) {
-
+            return res.status(500).json({ success: false, message: error.message || 'Server Error' })
         }
     }
     async deleteStudent(req: Request, res: Response) {
@@ -89,28 +96,28 @@ export class AdminController {
             if (!studentId) {
                 throw Error('student id id not found')
             }
-            let isDeleted=await this.adminService.deleteStudent(studentId)
-            if(isDeleted){
-                return res.status(200).json({success:true,message:'Student deleted succedd fully'})
+            let isDeleted = await this.adminService.deleteStudent(studentId)
+            if (isDeleted) {
+                return res.status(200).json({ success: true, message: 'Student deleted succedd fully' })
             }
-        }catch(err:any){
-            return res.status(500).json({success:false,message:err.message||'Server Error'})
+        } catch (err: any) {
+            return res.status(500).json({ success: false, message: err.message || 'Server Error' })
         }
     }
 
-    async logout(req:Request,res:Response){
-        req.session.destroy(err=>{
-            if(err){
-                console.log(' error in destroying seession',err);
-                return res.json({success:false,message:'error in destroying seession'})
-            }else{
-                 return res.status(200).json({success:true,message:'Admin logout successfull'})
+    async logout(req: Request, res: Response) {
+        req.session.destroy(err => {
+            if (err) {
+                console.log(' error in destroying seession', err);
+                return res.json({ success: false, message: 'error in destroying seession' })
+            } else {
+                return res.status(200).json({ success: true, message: 'Admin logout successfull' })
             }
         })
-}
+    }
 }
 
-export const getAllStudent: express.RequestHandler = async (req, res) => {
+export const getAllStudent: express.RequestHandler = async (req:Request, res:Response) => {
     try {
         const students = await studentModel.find()
         if (students.length > 0) return res.status(200).json({ message: "Students data", students })

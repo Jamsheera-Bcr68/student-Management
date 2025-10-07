@@ -1,7 +1,7 @@
 import {studentModel,IStudent} from '../Model/studentModel'
 
 export class AuthService{
-async login(email:string,password:string):Promise<IStudent|null>{
+async login(email:string,password:number):Promise<IStudent|null>{
 const student=await studentModel.findOne({email,password}).exec()
 return student
 }

@@ -7,7 +7,7 @@ export interface IStudent {
     course?: string;
     name?: string;
     phone?: number;
-    isDeleted: boolean;
+    isDeleted?: boolean;
 }
 export declare const studentModel: mongoose.Model<IStudent, {}, {}, {}, mongoose.Document<unknown, {}, IStudent, {}, {}> & IStudent & {
     _id: mongoose.Types.ObjectId;

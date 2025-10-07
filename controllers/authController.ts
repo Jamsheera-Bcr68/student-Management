@@ -1,12 +1,17 @@
 import { Request, Response } from "express";
 import { AuthService } from "../services/authServices";
-import { studentModel } from "../Model/studentModel";
-import { isStudentLogged } from "../authMiddleware/authMiddlewere";
+import { CreateStudentRequest } from "../Model/studentRequestModel";
+import { ApiResponse ,StudentResponse} from "../Model/studentResponseModel";
+
+interface TypedRequest<T> extends Request{
+    body :T
+}
+
 
 
 export class AuthController {
     constructor(private authService: AuthService) { }
-    async getRegister(req: Request, res: Response) {
+    async getRegister(req:Request, res: Response) {
         if(!req.session.student){
             res.render('studentSignup')
         }
@@ -18,7 +23,7 @@ export class AuthController {
         }
         
     }
-    async login(req: Request, res: Response) {
+    async login(req: TypedRequest<CreateStudentRequest>, res: Response<ApiResponse<StudentResponse>>) {
         try {
             const { email, password } = req.body
             console.log('from student login',req.body);
@@ -34,7 +39,7 @@ export class AuthController {
             return res.status(500).json({success:false, message: 'Server Error' })
         }
     }
-    async register(req: Request, res: Response) {
+    async register(req: TypedRequest<CreateStudentRequest>, res: Response<ApiResponse<StudentResponse>>) {
         try {
           
             const student = await this.authService.register(req.body)
@@ -47,7 +52,7 @@ export class AuthController {
             }
            
         } catch (error:any) {
-            res.status(500).json({ message:error.message ||'server errror' })
+            res.status(500).json({ success:false,message:error.message ||'server errror' })
         }
     }
 

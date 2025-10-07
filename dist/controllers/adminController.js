@@ -65,7 +65,7 @@ class AdminController {
             if (studentId) {
                 let student = await this.adminService.editStudent(studentId, data);
                 if (student) {
-                    return res.status(200).json({ success: true, message: 'student updated success fully', student });
+                    return res.status(200).json({ success: true, message: 'student updated success fully', data: student });
                 }
             }
             else {
@@ -74,6 +74,7 @@ class AdminController {
             }
         }
         catch (error) {
+            return res.status(500).json({ success: false, message: error.message || 'Server Error' });
         }
     }
     async deleteStudent(req, res) {

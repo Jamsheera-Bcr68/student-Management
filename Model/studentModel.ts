@@ -8,7 +8,7 @@ export interface IStudent{
   course ?: string;
   name ?: string;
   phone ?: number;
-  isDeleted:boolean
+  isDeleted?:boolean
 }
 const studentSchema = new mongoose.Schema<IStudent>({
   id: { type: Number},
